@@ -1,0 +1,39 @@
+﻿@model IEnumerable<CreditCardsModel>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <p class="text-lg-end"> <a asp-action="Create" class="btn btn-primary text-left">Create</a></p>
+    <br />
+    @if (Model != null)
+    {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Card Type</th>
+                    <th>Credit Limit</th>
+                    <th>Annual Charge</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var card in Model)
+                {
+                    <tr>
+                        <td>@card.CardType</td>
+                        <td>@card.CreditLimit</td>
+                        <td>@card.AnnualCharge</td>
+                        <td>
+                            <a asp-action="Edit" class="btn btn-warning" asp-route-id="@card.Id">Edit</a>
+                            <a asp-action="Details" class="btn btn-warning" asp-route-id="@card.Id">Details</a>
+                            <a asp-action="Delete" class="btn btn-warning" asp-route-id="@card.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>

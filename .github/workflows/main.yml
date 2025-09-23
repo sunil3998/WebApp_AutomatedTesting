@@ -1,9 +1,9 @@
 name: Web-App-Automated-Testing-ci
 
 on:
-   pull_request:
+  pull_request:
     branches:
-    - master
+      - master
   workflow_dispatch:
 
 jobs:

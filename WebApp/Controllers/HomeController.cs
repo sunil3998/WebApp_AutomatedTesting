@@ -17,6 +17,7 @@ namespace WebApp.Controllers
 
         public IActionResult Index()
         {
+            var vv = 5 / 0;
             var cards = _repository.GetAllCreditCards();
             return View(cards);
         }

@@ -1,0 +1,50 @@
+name: Web-App-Automated-Testing-cd
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5.0.0
+
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v5.0.0
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore
+      - name: Publish
+        run: dotnet publish .\WebApp\WebApp.csproj -o ${{env.DOTNET_ROOT}}/WebApp --no-build
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v4.6.2
+        with:
+        # Artifact name
+         name: web-artifact
+         path: ${{env.DOTNET_ROOT}}/WebApp
+       
+  deploy-dev:
+      runs-on: obuntu-latest
+      needs: build
+      steps:
+         - name: Download a Build Artifact
+           uses: actions/download-artifact@v5.0.0
+           with:
+            name: web-artifact
+         - name: Azure WebApp
+           uses: Azure/webapps-deploy@v2.2.17
+           with:
+            app-name: WebApp
+            publish-profile: ${{secrets.PUBLISH_PROFILE_DEV}}
+
+      
+  
